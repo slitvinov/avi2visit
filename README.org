@@ -10,15 +10,18 @@ brew install imagemagick
 
 Adjust makefile and run
 #+BEGIN_SRC sh
+git clone https://github.com/slitvinov/avi2visit.git
+cd avi2visit
 make install
 #+END_SRC
 
 * Example
-Convert file =25.avi= to output =.bov= files to directory =bov=. Open
-=bov/*.bov= files in visit.
+Convert =25.avi= to =bov/*.bov=
 
 #+BEGIN_SRC sh
 make install
 export px=42 py=33 # percentage to crop from every edge
 avi2bov bov 25.avi
 #+END_SRC
+
+Open =bov/*.bov= in visit.
