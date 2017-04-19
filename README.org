@@ -24,4 +24,4 @@ export px=42 py=33 # percentage to crop from every edge
 avi2bov bov 25.avi
 #+END_SRC
 
-Open =bov/*.bov= in visit.
+Open =bov/*.bov= in visit using Pseudocolor
