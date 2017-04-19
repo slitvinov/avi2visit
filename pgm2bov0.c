@@ -15,13 +15,14 @@ char bin_name[BUFSIZ], bin_path[BUFSIZ];
 #define die(fmt, ...) msg(fmt, __VA_ARGS__), exit(1)
 #define die0(s)       msg0(s), exit(1)
 
-int streq(char *a, char *b) { return !strcmp(a, b); };
+int streq(char *a, char *b) { return !strcmp(a, b); }
 void read0() {
   char magic[BUFSIZ];
   int n;
   n = fscanf(fd, "%2s %d %d %*d\n", magic, &lx, &ly);
   if (!streq(magic, "P5") || n != 3) die0("wrong pgm file");
-  fread(gray, lx*ly, sizeof(gray[0]), fd);
+  n  = fread(gray, lx*ly, sizeof(gray[0]), fd);
+  if (n != 1) die0("wrong pgm file");
 }
 
 void read(char* f) {

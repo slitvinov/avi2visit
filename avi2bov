@@ -31,3 +31,4 @@ pgm2bov  "$d"    $t/pgm/*
 # export px=42 py=33 # percentage to crop from every edge
 # avi2bov bov test_data/small.mpg
 # cat bov/000[01].bov  > avi.out.txt
+#
