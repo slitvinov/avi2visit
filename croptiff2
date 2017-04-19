@@ -43,3 +43,7 @@ if ! test -r "$1"; then die "cannot read $1"; fi
 
 ini $1
 for f; do run "$f"; done
+
+# f=$HOME/sara/new/25.avi
+# avi2tiff tiff $f
+# ./croptiff2 641 328 106 tiff/*.tiff

@@ -24,8 +24,9 @@ bind "r" "r = r - s; @p"
 bind "R" "r = r + s; @p"
 
 # +/- step size
-bind "+" "s = s + 1            ; print 's = ', s"
+bind "+" "s = s + 1;             print 's = ', s"
 bind "-" "s = s > 1 ? s - 1 : s; print 's = ', s"
+bind "0" "s = 1;                 print 's = ', s"
 
 # +/- frame
 bind "f" "a = a - s; b = b - s; @l; @p"
@@ -35,7 +36,7 @@ bind "F" "a = a + s; b = b + s; @l; @p"
 bind "p" "print xc, yc, r, a, b"
 
 # image
-i = '"test_data/p.png" binary filetype=png w rgbimage'
+i = '"test_data/p.avs" binary filetype=auto w rgbimage'
 
 # circle
 c = 'r*sin(t) + xc, r*cos(t) + yc'
