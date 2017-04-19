@@ -1,15 +1,13 @@
-set term x11
-set macro
-set size ratio -1
-set key off
-set parametric
-
 xc = 500; yc = 500 # center
 r  = 50 # radius
 s = 10 # step
 a = r; b = r; # axis of the frame
 
-# set print "p.conf"
+set term x11
+set macro
+set size ratio -1
+set key off
+set parametric
 
 # right-left
 bind "h" "xc = xc - s; @p"
@@ -50,11 +48,10 @@ yse0(t)= b * abs(sin(t))**(2./n) * sin_sign(t)
 xse(t) = xse0(t) + xc
 yse(t) = yse0(t) + yc
 se = 'xse(t), yse(t)'
-p = '@l; plot [0:2*pi] @i, @c, @se'
 
 # limits
 l = 'de = 6*a/5; set xrange [xc-de:xc+de]; set yrange [yc-de:yc+de]'
-@p
 
-# 256 112 16 96 96
-# 641 328 16 106 106
+# plot command
+p = '@l; plot [0:2*pi] @i, @c, @se'
+@p
