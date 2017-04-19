@@ -1,6 +1,6 @@
 * Introduction
 
-Convert avi file to a set BOV files.
+Convert avi file to a set files visit can read.
 
 * Install
 =imagemagic= should be installed:
@@ -8,10 +8,13 @@ Convert avi file to a set BOV files.
 brew install imagemagick
 #+END_SRC
 
-Adjust makefile and run
 #+BEGIN_SRC sh
 git clone https://github.com/slitvinov/avi2visit.git
 cd avi2visit
+#+END_SRC
+
+Adjust makefile and run
+#+BEGIN_SRC sh
 make install
 #+END_SRC
 
