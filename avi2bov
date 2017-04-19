@@ -1,0 +1,16 @@
+#!/bin/bash
+
+d=$1; shift # output directory
+
+t=/tmp/avi2bov.$$
+trap 'rm -rf $t' 1 2 3 15
+
+mkdir -p $t
+
+avi2tiff $t/tiff $f
+px=42 py=33 # percentege to crop from every edge
+croptiff $px $py $t/tiff/*
+fliptiff         $t/tiff/*
+
+tiff2pgm $t/pgm  $t/tiff/*
+pgm2bov  "$d"    $t/pgm/*
