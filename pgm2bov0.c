@@ -15,14 +15,23 @@ int lx, ly;
 
 char bin_name[BUFSIZ], bin_path[BUFSIZ];
 
+#define msg(fmt, ...) fprintf (stderr, "pgm2bov0: " fmt "\n", __VA_ARGS__)
+#define msg0(s)       msg("%s", s)
+#define die(fmt, ...) msg(fmt, __VA_ARGS__), exit(1)
+#define die0(s)       msg0(s), exit(1)
+
+int streq(char *a, char *b) { return !strcmp(a, b); };
 void read0() {
-  fscanf(fd, "%*s %d %d %*d\n", &lx, &ly);
+  char magic[BUFSIZ];
+  int n;
+  n = fscanf(fd, "%2s %d %d %*d\n", magic, &lx, &ly);
+  if (!streq(magic, "P5") || n != 3) die0("wrong pgm file");
   fread(gray, lx*ly, sizeof(gray[0]), fd);
-  printf("%d %d %d\n", gray[0], gray[lx*ly - 1], gray[lx*ly]);
 }
 
 void read(char* f) {
   fd = fopen(f, "r");
+  if (fd == NULL) die("cannot open %s", f);
   read0();
   fclose(fd);
 }
@@ -34,6 +43,7 @@ void write_bin0() {
 
 void write_bin(char* f) {
   fd = fopen(f, "w");
+  if (fd == NULL) die("cannot write %s", f);
   write_bin0();
   fclose(fd);
 }
@@ -51,11 +61,14 @@ void write_bov0() {
   p("CENTERING: zonal\n");
   p("BRICK_ORIGIN: 0 0 0\n");
   p("BRICK_SIZE: %d %d 2\n", lx, ly);
+#undef p
 }
 
 void write_bov(char* f) {
   fd = fopen(f, "w");
+  if (fd == NULL) die("cannot write %s", f);  
   write_bov0();
+  /* msg("write %s", f);   */
   fclose(fd);
 }
 
@@ -80,12 +93,12 @@ void bov2bin(char *p, /**/ char *name, char *path) { /* bin file name */
   strcat(name, ".bin");
   strncat(path, name, BUFSIZ);
 
-  printf("b: %s\n", name);
-  printf("p: %s\n", path);
+  /*  msg("write %s", path); */
 }
 
 int main(int argc, char *argv[]) {
-  char *pgm = argv[1], *bov = argv[2];
+  if (argc != 3) die0("arg count");
+  char *bov = argv[1], *pgm = argv[2];
   read(pgm);
   bov2bin(bov, bin_name, bin_path);
   write_bin(bin_path);

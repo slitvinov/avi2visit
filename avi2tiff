@@ -1,7 +1,14 @@
 #!/bin/bash
 
-dir=${1-.}
-avi=$2
+usage() { printf 'usage: avi2tiff <dir> <avi file>\n' > /dev/stderr; exit 1; }
+die()   { printf 'avi2tiff: %s\n' "$1"; usage; }
+mk ()   { mkdir -p "$1" 2>/dev/null; test -d "$1"; }
 
-mkdir -p "$dir"
+if test $# != 2; then die 'arg count'; fi
+dir=$1; shift
+avi=$1; shift
+
+if ! test -r "$avi"; then die "cannot read $avi"; fi
+if ! mk $dir;        then die "cannot create $dir"; fi
+
 convert "$avi" -type truecolor $dir/'%04d'.tiff

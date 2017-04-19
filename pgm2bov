@@ -5,5 +5,5 @@ d=${1-.}; shift
 mkdir -p "$d"
 for f; do
     b=`basename $f .pgm`
-    pgm2bov0 "$f" "$d/$b.bov"
+    pgm2bov0 "$d/$b.bov" "$f" 
 done
