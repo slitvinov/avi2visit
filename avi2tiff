@@ -11,4 +11,4 @@ avi=$1; shift
 if ! test -r "$avi"; then die "cannot read $avi"; fi
 if ! mk $dir;        then die "cannot create $dir"; fi
 
-convert "$avi" -type truecolor $dir/'%04d'.tiff
+convert "$avi" -type truecolor "$dir/%04d.tiff"
