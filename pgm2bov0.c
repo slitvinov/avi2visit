@@ -13,6 +13,8 @@ FILE* fd;
 unsigned char gray[MAXG];
 int lx, ly;
 
+char bin_name[BUFSIZ], bin_path[BUFSIZ];
+
 void read0() {
   fscanf(fd, "%*s %d %d %*d\n", &lx, &ly);
   fread(gray, lx*ly, sizeof(gray[0]), fd);
@@ -25,14 +27,35 @@ void read(char* f) {
   fclose(fd);
 }
 
-void write0() {
+void write_bin0() {
   fwrite(gray, lx*ly, sizeof(gray[0]), fd);
   fwrite(gray, lx*ly, sizeof(gray[0]), fd);
 }
 
-void write(char* f) {
+void write_bin(char* f) {
   fd = fopen(f, "w");
-  write0();
+  write_bin0();
+  fclose(fd);
+}
+
+void write_bov0() {
+#define p(...) fprintf (fd, __VA_ARGS__)
+  char* dtype = "BYTE";
+  char* vname = "gray";
+  
+  p("DATA_FILE: %s\n", bin_name);
+  p("DATA_SIZE: %d %d 2\n", lx, ly);
+  p("DATA_FORMAT: %s\n", dtype);
+  p("VARIABLE: %s\n", vname);
+  p("DATA_ENDIAN: LITTLE\n");
+  p("CENTERING: zonal\n");
+  p("BRICK_ORIGIN: 0 0 0\n");
+  p("BRICK_SIZE: %d %d 2\n", lx, ly);
+}
+
+void write_bov(char* f) {
+  fd = fopen(f, "w");
+  write_bov0();
   fclose(fd);
 }
 
@@ -62,9 +85,10 @@ void bov2bin(char *p, /**/ char *name, char *path) { /* bin file name */
 }
 
 int main(int argc, char *argv[]) {
-  //  read(argv[1]);
-  //  write(argv[2]);
-  char name[BUFSIZ], path[BUFSIZ];
-  bov2bin(argv[2], name, path);
+  char *pgm = argv[1], *bov = argv[2];
+  read(pgm);
+  bov2bin(bov, bin_name, bin_path);
+  write_bin(bin_path);
+  write_bov(bov);
   return 0;
 }

@@ -1,53 +1,12 @@
 #!/bin/bash
 
-copy () (d=$HOME/sara/new; cp $d/25.avi v.avi )
-mkdirs ()   { mkdir -p tiff pgm; }
-avi2tiff () { convert v.avi -type truecolor tiff/'%04d'.tiff; }
-# [a]wk [e]xpression: ae 1.0+2.0 returns 3.0
-ae() ( s='BEGIN {print '"$@"'}'; awk "$s" )
-set_crop () { # uses `px' and `py' to set `lx' and `ly'
-    local f=tiff/0000.tiff
-    lx=`convert $f -format '%w' info:`
-    ly=`convert $f -format '%h' info:`
+f=$HOME/sara/new/25.avi
 
-    dx=`ae int '(' $px/100*$lx ')'`
-    dy=`ae int '(' $py/100*$ly ')'`
+avi2tiff tiff $f
 
-    lx=`ae $lx-2*$dx`
-    ly=`ae $ly-2*$dy`
-}
+px=42 py=33 # percentege to crop from every edge
+croptiff $px $py tiff/*
+fliptiff         tiff/*
 
-run_crop() {
-    for f in tiff/*.tiff; do
-	convert -type truecolor -crop  ${lx}x${ly}+${dx}+${dy} +repage "$f" tmp.tiff &&
-	    mv tmp.tiff "$f"
-    done
-}
-
-flip() {
-    for f in tiff/*.tiff; do
-	convert -type truecolor -flip "$f" tmp.tiff &&
-	    mv tmp.tiff "$f"
-    done
-}
-
-tiff2pgm () (
-    for f in tiff/*.tiff; do
-	b=`basename "$f"`
-	b=${b%.tiff}
-	convert "$f" pgm/$b.pgm
-    done
-)
-
-copy
-mkdirs
-avi2tiff
-
-px=40 py=30 # percentege to crop from every edge
-set_crop # set parameters of the crop
-
-run_crop
-tiff2pgm
-
-#flip
-# convert tiff/0000.tiff -type grayscale i.pgm
+tiff2pgm pgm     tiff/*
+pgm2bov  bov     pgm/*

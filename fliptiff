@@ -1,0 +1,14 @@
+#!/bin/bash
+
+msg() { printf "fliptiff: %s\n" "$*" > /dev/stderr; }
+
+run() {
+    convert -type truecolor -flip "$f" $t &&
+	mv $t "$f"    
+}
+
+
+t=/tmp/croptiff.$$.tiff
+trap 'rm -rf $t' 1 2 3 15
+
+for f; do run "$f"; done

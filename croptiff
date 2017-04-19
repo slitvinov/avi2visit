@@ -1,0 +1,35 @@
+#!/bin/bash
+
+msg() { printf "croptiff: %s\n" "$*" > /dev/stderr; }
+# [a]wk [e]xpression: ae 1.0+2.0 returns 3.0
+ae() ( s='BEGIN {print '"$@"'}'; awk "$s" )
+ini () { # uses `px' and `py' to set `lx' and `ly', `dx', `dy'
+    local f=$1
+    lx=`convert $f -format '%w' info:`
+    ly=`convert $f -format '%h' info:`
+    msg old size: $lx $ly
+
+    dx=`ae int '(' $px/100*$lx ')'`
+    dy=`ae int '(' $py/100*$ly ')'`
+
+    lx=`ae $lx-2*$dx`
+    ly=`ae $ly-2*$dy`
+
+    msg new size: $lx $ly    
+}
+
+run() {
+    convert -type truecolor -crop  ${lx}x${ly}+${dx}+${dy} +repage "$1" $t &&
+	mv $t "$1"
+}
+
+
+t=/tmp/croptiff.$$.tiff
+trap 'rm -rf $t' 1 2 3 15
+
+px=$1; shift
+py=$1; shift
+
+ini $1
+
+for f; do run "$f"; done
