@@ -19,7 +19,7 @@ make install
 #+BEGIN_SRC sh
 avi2bov test_bov test_data/small.mpg
 #+END_SRC
-Open =test_bov/*.bov= in visit using Pseudocolor.
+Open =test_bov/*.bov= in visit using Pseudocolor (variable name is =gray=).
 
 If you have =atest= run
 #+BEGIN_SRC sh
@@ -35,4 +35,4 @@ export px=42 py=33 # percentage to crop from every edge
 avi2bov bov 25.avi
 #+END_SRC
 
-Open =bov/*.bov= in visit using Pseudocolor.
+Open =bov/*.bov= in visit using Pseudocolor (variable name is =gray=).

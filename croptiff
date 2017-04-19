@@ -30,7 +30,7 @@ run() {
 
 
 t=/tmp/croptiff.$$.tiff
-trap 'rm -rf $t' 1 2 3 15
+trap 'rm -rf $t; exit $?' 0 1 2 3 15
 
 px=$1; shift; if test $# = 0; then die 'arg count'; fi
 py=$1; shift; if test $# = 0; then die 'arg count'; fi

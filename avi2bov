@@ -10,7 +10,7 @@ avi=$1; shift # input file
 if ! test -r "$avi"; then die "cannot read $avi"; fi
 
 t=/tmp/avi2bov.$$
-trap 'rm -rf $t' 1 2 3 15
+trap 'rm -rf $t; exit $?' 0 1 2 13 15
 mkdir -p $t
 
 avi2tiff $t/tiff $avi
@@ -25,7 +25,9 @@ tiff2pgm $t/pgm  $t/tiff/*
 pgm2bov  "$d"    $t/pgm/*
 
 # TEST: avi2bov.t0
-# make install
+# bin=/tmp/avi2bov
+# make install BIN=$bin
+# export PATH=$bin:$PATH
 # export px=42 py=33 # percentage to crop from every edge
 # avi2bov bov test_data/small.mpg
 # cat bov/000[01].bov  > avi.out.txt

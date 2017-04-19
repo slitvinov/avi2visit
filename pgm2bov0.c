@@ -4,11 +4,6 @@
 
 #define MAXG (3000*3000)
 
-/* 
-convert tiff/0000.tiff -type grayscale i.txt
-make && ./pgm2bov  i.pgm i.bin
-*/
-
 FILE* fd;
 unsigned char gray[MAXG];
 int lx, ly;
@@ -90,7 +85,7 @@ void parts(char *p, /**/ char *b, char *d) { /* base name: dir/a.suf -> a, dir/ 
 
 void bov2bin(char *p, /**/ char *name, char *path) { /* bin file name */
   parts(p, name, path);
-  strcat(name, ".bin");
+  strcat(name, ".data");
   strncat(path, name, BUFSIZ);
 
   /*  msg("write %s", path); */
