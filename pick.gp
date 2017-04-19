@@ -4,7 +4,7 @@ set size ratio -1
 set key off
 set parametric
 
-xc = 100; yc = 100 # center
+xc = 500; yc = 500 # center
 r  = 50 # radius
 s = 10 # step
 a = r; b = r; # axis of the frame
@@ -24,12 +24,12 @@ bind "r" "r = r - s; @p"
 bind "R" "r = r + s; @p"
 
 # +/- step size
-bind "+" "s = s + 1            ; @p"
-bind "-" "s = s > 1 ? s - 1 : s; @p"
+bind "+" "s = s + 1            ; print 's = ', s"
+bind "-" "s = s > 1 ? s - 1 : s; print 's = ', s"
 
 # +/- frame
-bind "f" "a = a - s; b = b - s; @p"
-bind "F" "a = a + s; b = b + s; @p"
+bind "f" "a = a - s; b = b - s; @l; @p"
+bind "F" "a = a + s; b = b + s; @l; @p"
 
 # print
 bind "p" "print xc, yc, r, a, b"
@@ -49,7 +49,11 @@ yse0(t)= b * abs(sin(t))**(2./n) * sin_sign(t)
 xse(t) = xse0(t) + xc
 yse(t) = yse0(t) + yc
 se = 'xse(t), yse(t)'
+p = '@l; plot [0:2*pi] @i, @c, @se'
 
-p = 'plot [0:2*pi] @i, @c, @se'
-
+# limits
+l = 'de = 6*a/5; set xrange [xc-de:xc+de]; set yrange [yc-de:yc+de]'
 @p
+
+# 256 112 16 96 96
+# 641 328 16 106 106

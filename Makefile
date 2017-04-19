@@ -1,7 +1,7 @@
 BIN = $(HOME)/bin
 
 PROGS = pgm2bov0
-SCRIPTS = avi2bov avi2tiff croptiff \
+SCRIPTS = avi2bov avi2tiff croptiff croptiff2 \
 	fliptiff tiff2pgm pgm2bov
 CFLAGS=-O2 -g -std=c99 -pedantic -Wall -Wextra
 

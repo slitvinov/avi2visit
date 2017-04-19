@@ -1,0 +1,45 @@
+#!/bin/bash
+
+msg()   { printf "croptiff: %s\n" "$*" > /dev/stderr; }
+usage() { printf 'usage: croptiff <px> <py> <tiff file>\n' > /dev/stderr; exit 1; }
+die()   { printf 'croptiff: %s\n' "$*"; usage; }
+
+# [a]wk [e]xpression: ae 1.0+2.0 returns 3.0
+ae() ( s='BEGIN {print '"$@"'}'; awk "$s" )
+ini () { #
+    local f=$1
+    lx=`convert $f -format '%w' info:`
+    if test $? != 0; then die wrong image: $f; fi
+    ly=`convert $f -format '%h' info:`
+    msg old size: $lx $ly
+
+    dx=`ae $xc - $a`
+    dy=`ae $ly - $yc   -   $a`
+
+    lx=`ae 2*$a`
+    ly=`ae 2*$a`    
+
+    msg new size: $lx $ly    
+}
+
+run() {
+    if ! test -r "$1"; then die "cannot read $1"; fi
+    convert -type truecolor -crop  ${lx}x${ly}+${dx}+${dy} +repage "$1" $t &&
+	mv $t "$1"
+}
+
+
+t=/tmp/croptiff.$$.tiff
+trap 'rm -rf $t; exit $?' 0 1 2 3 15
+
+xc=$1; shift; if test $# = 0; then die 'arg count'; fi
+yc=$1; shift; if test $# = 0; then die 'arg count'; fi
+a=$1 ; shift; if test $# = 0; then die 'arg count'; fi
+
+echo $xc $yc $a
+
+
+if ! test -r "$1"; then die "cannot read $1"; fi
+
+ini $1
+for f; do run "$f"; done
