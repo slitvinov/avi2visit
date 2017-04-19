@@ -3,7 +3,12 @@
 Convert avi file to a set BOV files.
 
 * Install
-Adjust makefile
+=imagemagic= should be installed:
+#+BEGIN_SRC sh
+brew install imagemagick
+#+END_SRC
+
+Adjust makefile and run
 #+BEGIN_SRC sh
 make install
 #+END_SRC
@@ -17,4 +22,3 @@ make install
 export px=42 py=33 # percentage to crop from every edge
 avi2bov bov 25.avi
 #+END_SRC
-

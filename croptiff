@@ -23,6 +23,7 @@ ini () { # uses `px' and `py' to set `lx' and `ly', `dx', `dy'
 }
 
 run() {
+    if ! test -r "$1"; then die "cannot read $1"; fi
     convert -type truecolor -crop  ${lx}x${ly}+${dx}+${dy} +repage "$1" $t &&
 	mv $t "$1"
 }

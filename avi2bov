@@ -1,16 +1,21 @@
 #!/bin/bash
 
+usage() { printf 'usage: avi2bov <dir> <avi file>\n' > /dev/stderr; exit 1; }
+die()   { printf 'avi2bov: %s\n' "$1"; usage; }
+
+if test $# != 2; then die 'arg count'; fi
 d=$1; shift # output directory
-f=$1; shift # input file
+avi=$1; shift # input file
+
+if ! test -r "$avi"; then die "cannot read $avi"; fi
 
 t=/tmp/avi2bov.$$
 trap 'rm -rf $t' 1 2 3 15
-
 mkdir -p $t
 
-avi2tiff $t/tiff $f
+avi2tiff $t/tiff $avi
 
-# percentege to crop from every edge
+# percentage to crop from every edge
 : ${px=0} ${py=0}
 croptiff $px $py $t/tiff/*
 fliptiff         $t/tiff/*

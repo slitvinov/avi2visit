@@ -1,8 +1,10 @@
 #!/bin/bash
 
-msg() { printf "fliptiff: %s\n" "$*" > /dev/stderr; }
+usage() { printf 'usage: fliptiff [tiff files]... >\n' > /dev/stderr; exit 1; }
+die()   { printf 'fliptiff: %s\n' "$1"; usage; }
 
 run() {
+    if ! test -r "$f"; then die "cannot read $f"; fi
     convert -type truecolor -flip "$f" $t &&
 	mv $t "$f"    
 }
@@ -10,5 +12,4 @@ run() {
 
 t=/tmp/croptiff.$$.tiff
 trap 'rm -rf $t' 1 2 3 15
-
 for f; do run "$f"; done
