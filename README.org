@@ -1,0 +1,20 @@
+* Introduction
+
+Convert avi file to a set BOV files.
+
+* Install
+Adjust makefile
+#+BEGIN_SRC sh
+make install
+#+END_SRC
+
+* Example
+Convert file =25.avi= to output =.bov= files to directory =bov=. Open
+=bov/*.bov= files in visit.
+
+#+BEGIN_SRC sh
+make install
+export px=42 py=33 # percentage to crop from every edge
+avi2bov bov 25.avi
+#+END_SRC
+
