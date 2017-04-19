@@ -3,7 +3,7 @@
 Convert avi file to a set files visit can read.
 
 * Install
-=imagemagic= should be installed:
+=ImageMagic= should be installed:
 #+BEGIN_SRC sh
 brew install imagemagick
 #+END_SRC
