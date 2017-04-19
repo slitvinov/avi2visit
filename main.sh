@@ -1,7 +1,7 @@
 #!/bin/bash
 
 copy () (d=$HOME/sara/new; cp $d/25.avi v.avi )
-mdirs ()   { mkdir -p tiff; }
+mkdirs ()   { mkdir -p tiff pgm; }
 avi2tiff () { convert v.avi -type truecolor tiff/'%04d'.tiff; }
 # [a]wk [e]xpression: ae 1.0+2.0 returns 3.0
 ae() ( s='BEGIN {print '"$@"'}'; awk "$s" )
@@ -31,13 +31,23 @@ flip() {
     done
 }
 
+tiff2pgm () (
+    for f in tiff/*.tiff; do
+	b=`basename "$f"`
+	b=${b%.tiff}
+	convert "$f" pgm/$b.pgm
+    done
+)
+
 copy
-mdirs
+mkdirs
 avi2tiff
 
-px=40 py=30
+px=40 py=30 # percentege to crop from every edge
 set_crop # set parameters of the crop
-run_crop
-flip
 
-feh i.tiff
+run_crop
+tiff2pgm
+
+#flip
+# convert tiff/0000.tiff -type grayscale i.pgm
