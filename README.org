@@ -21,6 +21,11 @@ avi2bov test_bov test_data/small.mpg
 #+END_SRC
 Open =test_bov/*.bov= in visit using Pseudocolor.
 
+If you have =atest= run
+#+BEGIN_SRC sh
+atest avi2bov
+#+END_SRC
+
 * Example
 Convert =25.avi= to =bov/*.bov=
 
